@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PurchasedActivity"
+    android:background="@color/shaded_dark_black">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_image">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/purchasedTextView"
+            android:text="@string/purchased"
+            android:textSize="32sp"
+            android:fontFamily="@font/open_sans_bold"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/purchasedActivitySearchBar"
+            android:layout_below="@id/purchasedTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            app:backgroundTint="#8019191B"
+            android:background="@drawable/searchbar_border"
+            app:iconifiedByDefault="false"
+            app:searchHintIcon="@null"
+            app:queryHint="@string/search"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/purchasedActivitySearchBar"
+            android:layout_marginTop="40dp"
+            android:id="@+id/RecyclerViewOne"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

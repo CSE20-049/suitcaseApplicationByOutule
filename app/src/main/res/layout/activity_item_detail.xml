@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ItemDetailActivity"
+    android:background="@color/shaded_dark_black">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_image">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailsPageToolbar"
+            android:background="@color/black"
+            app:titleTextColor="@color/white"
+            app:title="Details"
+            app:navigationIcon="@drawable/ic_arrow_back"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/itemDetailImageView"
+            android:layout_width="389dp"
+            android:layout_height="290dp"
+            android:padding="2dp"
+            android:layout_below="@+id/detailsPageToolbar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.MyApp.CornerSize"
+            app:strokeColor="@color/magenta_pink"
+            app:strokeWidth="2dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemDetailItemName"
+            android:layout_below="@+id/itemDetailImageView"
+            android:text="@string/image_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textSize="32sp"
+            android:fontFamily="@font/open_sans_bold"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemDetailItemPrice"
+            android:text="@string/price"
+            android:layout_below="@id/itemDetailItemName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_bold"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontalDividerOne"
+            android:layout_below="@+id/itemDetailItemPrice"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            app:dividerColor="@color/white"
+            android:layout_marginStart="40dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemDetailItemDescription"
+            android:layout_below="@id/horizontalDividerOne"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum."
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_regular"
+            android:textAlignment="center"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontalDividerTwo"
+            android:layout_below="@+id/itemDetailItemDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            app:dividerColor="@color/white"
+            android:layout_marginStart="40dp"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

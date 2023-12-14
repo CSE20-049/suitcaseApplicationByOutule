@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/shaded_dark_black">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="360dp"
+            android:layout_height="270dp"
+            android:layout_marginStart="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            app:strokeColor="@color/magenta_pink"
+            app:strokeWidth="2dp"
+            android:backgroundTint="#CC070E13">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:id="@+id/homeActivityImageView"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:scaleType="centerCrop"
+                    android:padding="2dp"
+                    app:strokeColor="@color/magenta_pink"
+                    app:strokeWidth="2dp"
+                    app:shapeAppearance="@style/circular"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/homeActivityItemName"
+                    android:layout_toEndOf="@id/homeActivityImageView"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/item_name"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/open_sans_bold"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/homeActivityCheckBox"
+                    android:layout_above="@id/dividerID"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:buttonTint="@color/white"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/homeActivityEditIcon"
+                    android:layout_toEndOf="@id/homeActivityImageView"
+                    android:layout_above="@id/dividerID"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
+                    app:srcCompat="@drawable/ic_edit"/>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/homeActivityDeleteIcon"
+                    android:layout_toEndOf="@id/homeActivityEditIcon"
+                    android:layout_above="@id/dividerID"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    app:srcCompat="@drawable/ic_delete"/>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/homeActivityShareIcon"
+                    android:layout_toEndOf="@id/homeActivityDeleteIcon"
+                    android:layout_above="@id/dividerID"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    app:srcCompat="@drawable/ic_share"/>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:id="@+id/dividerID"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    app:dividerColor="@color/magenta_pink"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="135dp"
+                    android:id="@+id/homeActivityDescriptionTextView"
+                    android:layout_below="@id/dividerID"
+                    android:layout_margin="10dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod temporincididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                    laborum."
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:textAlignment="textStart"/>
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+</LinearLayout>

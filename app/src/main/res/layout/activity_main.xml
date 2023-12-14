@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/shaded_dark_black">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_image">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/welcomeScreenApplicationLogo"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:background="@drawable/application_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/applicationNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:layout_below="@id/welcomeScreenApplicationLogo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="34sp"
+            android:fontFamily="@font/mochiy_pop_p_one_regular"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/slogan"
+            android:layout_width="238dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/applicationNameText"
+            android:text="@string/slogan"
+            android:textAlignment="center"
+            android:fontFamily="@font/open_sans_regular"
+            android:letterSpacing="0.1"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

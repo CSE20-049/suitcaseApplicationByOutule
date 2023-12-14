@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentNavigatorActivity">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mainApplicationToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white"
+            app:menu="@menu/logout_menu"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomNavigationView"
+            android:layout_below="@+id/mainApplicationToolBar" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black"
+            app:itemIconTint="@color/bottom_navigation_text_color_selector"
+            app:itemRippleColor="@color/light_blue"
+            app:itemTextColor="@color/bottom_navigation_text_color_selector"
+            app:menu="@menu/navigation_icons_menu" />
+
+</RelativeLayout>

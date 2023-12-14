@@ -1,8 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.SuitCaseApplicationByOutule" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- For app's toolbar/action bar -->
+        <item name="colorPrimary">@color/shaded_dark_black</item>
+        <!-- For app's status bar -->
+        <item name="colorPrimaryDark">@color/shaded_dark_black</item>
+        <!-- For app's elements -->
+        <item name="colorAccent">@color/magenta_pink</item>
+
+        <item name="android:textColor">@color/white</item>
+
+        <!-- Changing the background color of the menu drop drop icon -->
+        <item name="android:textColorSecondary">@color/white</item>
+
     </style>
 
     <style name="Theme.SuitCaseApplicationByOutule" parent="Base.Theme.SuitCaseApplicationByOutule" />
