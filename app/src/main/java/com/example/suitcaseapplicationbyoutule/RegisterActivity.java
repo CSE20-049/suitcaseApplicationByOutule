@@ -24,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.PrivateKey;
-
 public class RegisterActivity extends AppCompatActivity {
 
     MaterialTextView registerText, signInText;

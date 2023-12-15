@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/homeActivitySearchBar"
-            android:id="@+id/RecyclerViewOne"/>
+            android:id="@+id/recyclerViewOne"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"

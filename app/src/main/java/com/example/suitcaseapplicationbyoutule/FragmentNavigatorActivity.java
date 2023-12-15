@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.suitcaseapplicationbyoutule.adapter.FragmentNavigatorActivityAdapter;
+import com.example.suitcaseapplicationbyoutule.adaptersAndViewHolders.FragmentNavigatorActivityAdapter;
 import com.example.suitcaseapplicationbyoutule.statusbar.StatusBarUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;

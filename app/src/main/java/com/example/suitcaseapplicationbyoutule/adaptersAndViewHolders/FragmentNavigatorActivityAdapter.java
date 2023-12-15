@@ -1,4 +1,4 @@
-package com.example.suitcaseapplicationbyoutule.adapter;
+package com.example.suitcaseapplicationbyoutule.adaptersAndViewHolders;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

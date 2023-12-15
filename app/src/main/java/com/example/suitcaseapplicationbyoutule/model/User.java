@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 public class User implements Parcelable {
 
     private String firstName;
-    private String LastName;
+    private String lastName;
     private String email;
     private String contact;
     private String password;
@@ -26,11 +26,11 @@ public class User implements Parcelable {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -66,7 +66,7 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(firstName);
-        parcel.writeString(LastName);
+        parcel.writeString(lastName);
         parcel.writeString(email);
         parcel.writeString(contact);
         parcel.writeString(password);

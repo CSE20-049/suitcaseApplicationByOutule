@@ -29,10 +29,9 @@
     <string name="item_name">Item Name</string>
     <string name="description">Description</string>
     <string name="update">Update</string>
-    <string name="upload_product_image">Upload Product Image</string>
-    <string name="product_name">Product Name</string>
-    <string name="product_price">Product Price</string>
-    <string name="product_description">Product Description</string>
+    <string name="upload_item_image">Upload Item Image</string>
+    <string name="item_price">Item Price</string>
+    <string name="item_description">item Description</string>
     <string name="save">Save</string>
     <string name="new_item">New Item</string>
     <string name="search">Search…</string>
