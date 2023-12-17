@@ -9,7 +9,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -30,19 +32,23 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UpdateItemActivity extends AppCompatActivity {
 
-    ShapeableImageView updateItemImageView;
     TextInputEditText updateItemNameTextInputEditText, updateItemPriceTextInputEditText,
             updateItemDescriptionTextInputEditText;
 
-    String title, price, description, imageURL, key, oldImageURL;
-
     MaterialButton updateBTN;
+    ShapeableImageView updateItemImageView;
 
-    Uri uri;
     DatabaseReference databaseReference;
     StorageReference storageReference;
+
+    Uri uri;
+
+    private String oldImageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,11 @@ public class UpdateItemActivity extends AppCompatActivity {
         updateItemPriceTextInputEditText = findViewById(R.id.updateItemPriceTextInputEditText);
         updateItemDescriptionTextInputEditText = findViewById(R.id.updateItemDescriptionTextInputEditText);
         updateBTN = findViewById(R.id.updateBTN);
+
+        // Retrieve Sanitized email from shared preference
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(
+                "Email Preference", Context.MODE_PRIVATE);
+        String email = preferences.getString("sanitizedEmail", "");
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -77,24 +88,25 @@ public class UpdateItemActivity extends AppCompatActivity {
             updateItemNameTextInputEditText.setText(bundle.getString("ItemName"));
             updateItemDescriptionTextInputEditText.setText(bundle.getString("Description"));
             updateItemPriceTextInputEditText.setText(bundle.getString("Price"));
-            key = bundle.getString("Key");
-            imageURL = bundle.getString("Image");
-            Glide.with(this).load(bundle.getString("Image")).into(updateItemImageView);
+            String key = bundle.getString("Key");
+            oldImageURL = bundle.getString("Image");
+            databaseReference = FirebaseDatabase.getInstance().getReference("Items for " + email).child(key);
+            Glide.with(this).load(oldImageURL).into(updateItemImageView);
         }
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Product").child(key);
 
         updateItemImageView.setOnClickListener(view -> {
             Intent photoPicker = new Intent(Intent.ACTION_PICK);
             photoPicker.setType("image/*");
             activityResultLauncher.launch(photoPicker);
         });
-        updateBTN.setOnClickListener(view ->  {
+
+        updateBTN.setOnClickListener(view -> {
             saveData();
-            Intent intent = new Intent(UpdateItemActivity.this, MainActivity.class);
+            Intent intent = new Intent(UpdateItemActivity.this, FragmentNavigatorActivity.class);
             startActivity(intent);
         });
     }
+
     public void saveData() {
         if (uri != null && uri.getLastPathSegment() != null && !uri.getLastPathSegment().isEmpty()) {
             // A new image has been selected, so upload it
@@ -112,75 +124,56 @@ public class UpdateItemActivity extends AppCompatActivity {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isComplete());
                     Uri urlImage = uriTask.getResult();
-                    imageURL = urlImage.toString();
-                    updateData();
+                    updateItem(urlImage.toString());
                     dialog.dismiss();
                 }
             });
         } else {
-            // Handle the case where the URI is null or empty
-            Toast.makeText(this, "Invalid image URI", Toast.LENGTH_SHORT).show();
+            // No new image selected, so just update the data with the existing image URL
+            updateItem(null);
         }
     }
 
+    public void updateItem(String imageUrl) {
+        String itemName = updateItemNameTextInputEditText.getText().toString().trim();
+        String itemDescription = updateItemDescriptionTextInputEditText.getText().toString().trim();
+        String itemPrice = updateItemPriceTextInputEditText.getText().toString().trim();
 
-    public void updateData() {
+        Item item = new Item();
+        item.setName(itemName);
+        item.setDescription(itemDescription);
+        item.setPrice(itemPrice);
 
-        if (imageURL != null) {
-            title = updateItemNameTextInputEditText.getText().toString().trim();
-            description =  updateItemDescriptionTextInputEditText.getText().toString().trim();
-            price = updateItemPriceTextInputEditText.getText().toString().trim();
-
-            Item item = new Item();
-            item.setName(title);
-            item.setDescription(description);
-            item.setPrice(price);
-            item.setImage(imageURL);
-
-            databaseReference.setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
-                        reference.delete();
-                        Toast.makeText(UpdateItemActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UpdateItemActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
+        // Only update the image URL if a new image is selected
+        if (imageUrl != null) {
+            item.setImage(imageUrl);
         } else {
-            title = updateItemNameTextInputEditText.getText().toString().trim();
-            description =  updateItemDescriptionTextInputEditText.getText().toString().trim();
-            price = updateItemPriceTextInputEditText.getText().toString().trim();
-
-            Item item = new Item();
-            item.setName(title);
-            item.setDescription(description);
-            item.setPrice(price);
+            // If no new image is selected, retain the existing image URL
             item.setImage(oldImageURL);
-
-            databaseReference.setValue(title).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
-                        reference.delete();
-                        Toast.makeText(UpdateItemActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UpdateItemActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
+        // Using the existing key to update specific fields of the item
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("name", item.getName());
+        updateMap.put("description", item.getDescription());
+        updateMap.put("price", item.getPrice());
+        updateMap.put("image", item.getImage());
+
+        // Using updateChildren to update only specific fields without removing others
+        databaseReference.updateChildren(updateMap)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Successfully updated the item
+                        Toast.makeText(UpdateItemActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // Handle the update failure
+                        Toast.makeText(UpdateItemActivity.this, "Failed to update item", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle the update failure
+                    Toast.makeText(UpdateItemActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

@@ -9,12 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="300dp"
+        android:background="@drawable/background_image">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="360dp"
@@ -23,6 +19,7 @@
             android:layout_marginStart="30dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
             app:strokeColor="@color/magenta_pink"
             app:strokeWidth="2dp"
             android:backgroundTint="#CC070E13">

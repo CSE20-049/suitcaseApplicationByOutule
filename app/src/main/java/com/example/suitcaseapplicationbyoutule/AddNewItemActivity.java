@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -66,10 +68,10 @@ public class AddNewItemActivity extends AppCompatActivity {
         itemDescriptionField = findViewById(R.id.newItemDescriptionTextInputEditText);
         saveBTN = findViewById(R.id.saveBTN);
 
-        // Retrieve Sanitized email from the intent.
-        Intent intent = getIntent();
-        email = intent.getStringExtra("email");
-        System.out.println(email);
+        // Retrieve Sanitized email from shared preference
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(
+                "Email Preference", Context.MODE_PRIVATE);
+        email = preferences.getString("sanitizedEmail", "");
 
         MaterialToolbar materialToolbar = findViewById(R.id.newItemToolBar);
         materialToolbar.setNavigationOnClickListener(View -> {
@@ -145,10 +147,11 @@ public class AddNewItemActivity extends AppCompatActivity {
         item.setPrice(itemPrice);
         item.setDescription(itemDescription);
         item.setImage(imageURL);
+        item.setIsChecked(false);
 
+        String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
-        FirebaseDatabase.getInstance().getReference("Users").child(email).child("Product")
-                .push()
+        FirebaseDatabase.getInstance().getReference( "Items for " + email).child(currentDate)
                 .setValue(item)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

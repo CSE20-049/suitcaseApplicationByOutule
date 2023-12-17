@@ -5,23 +5,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.suitcaseapplicationbyoutule.model.User;
 import com.example.suitcaseapplicationbyoutule.statusbar.StatusBarUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,9 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText emailField, passwordField;
 
-    //Creating a DatabaseReference class to access firebase's Realtime Database
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-            .getReferenceFromUrl("https://suitcase-application-2-default-rtdb.firebaseio.com/");
+    FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         signInBTN =  findViewById(R.id.signInBTN);
         emailField = findViewById(R.id.loginEmailTextInputEditText);
         passwordField = findViewById(R.id.loginPasswordTextInputEditText);
+        auth = FirebaseAuth.getInstance();
 
         loginText.setText(getResources().getString(R.string.login));
 
@@ -70,13 +70,14 @@ public class LoginActivity extends AppCompatActivity {
 
         // Handling logging actions on click______________________________________________________//
         signInBTN.setOnClickListener(View -> {
+
             final String email = emailField.getText().toString().trim();
             final String password = passwordField.getText().toString().trim();
 
             // Accounting for empty fields //
-            if (email.isEmpty()) {
+            if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this, "Email Required", Toast.LENGTH_SHORT).show();
-            } else if (password.isEmpty()) {
+            } else if (TextUtils.isEmpty(password)) {
                 Toast.makeText(LoginActivity.this, "Password Required", Toast.LENGTH_SHORT).show();
             } else {
 
@@ -87,57 +88,42 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
-                // Sanitize the email address to create a valid Firebase Database path
-                String sanitizedEmail = email.replace(".", "_");
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                databaseReference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Sign in is successful
+                                if (task.isSuccessful()) {
 
-                        //Checking if the sanitized email address exists in the Firebase database
-                        if (snapshot.hasChild(sanitizedEmail)) {
-                            DataSnapshot userSnapshot = snapshot.child(sanitizedEmail);
+                                    // Sanitize the email address to create a valid Firebase Database path
+                                    String sanitizedEmail = email.replace(".", "_");
 
-                            if (userSnapshot.child("password").exists()) {
-                                String storedPassword = userSnapshot.child("password")
-                                        .getValue(String.class);
-
-                                if (password.equals(storedPassword)) {
                                     Intent intent = new Intent(LoginActivity.this,
                                             FragmentNavigatorActivity.class);
 
-                                    // Put the User's sanitized Email on the intent object
-                                    intent.putExtra("email", sanitizedEmail);
+                                    // Put the User's sanitized Email in a shared preference
+                                    SharedPreferences preferences = getApplicationContext().getSharedPreferences(
+                                            "Email Preference", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("sanitizedEmail", sanitizedEmail);
+                                    editor.apply();
 
                                     // Start the activity
                                     startActivity(intent);
                                     finish();
                                     Toast.makeText(LoginActivity.this, "Login Successful",
                                             Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
+                                    dialog.dismiss();
+
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Wrong Password",
-                                            Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
+
+
                                 }
-                            } else {
-                                Toast.makeText(LoginActivity.this, "No password found for the user",
-                                        Toast.LENGTH_SHORT).show();
-                                        dialog.dismiss();
+
                             }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "No account found",
-                                    Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                        }
+                        });
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
             }
         });
     }

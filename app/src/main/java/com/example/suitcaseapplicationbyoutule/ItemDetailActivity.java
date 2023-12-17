@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.example.suitcaseapplicationbyoutule.statusbar.StatusBarUtil;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -27,6 +28,13 @@ public class ItemDetailActivity extends AppCompatActivity {
         itemName = findViewById(R.id.itemDetailItemName);
         itemPrice = findViewById(R.id.itemDetailItemPrice);
         itemDescription =  findViewById(R.id.itemDetailItemDescription);
+
+        //Going back to previous activity on navigation back arrow clicked
+        MaterialToolbar detailsPageToolbar = findViewById(R.id.detailsPageToolbar);
+        detailsPageToolbar.setNavigationOnClickListener(View -> {
+            detailsPageToolbar.setNavigationIconTint(getColor(R.color.magenta_pink));
+            finish();
+        });
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

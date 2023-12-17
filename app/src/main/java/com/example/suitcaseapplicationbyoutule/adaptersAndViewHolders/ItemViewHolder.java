@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.suitcaseapplicationbyoutule.R;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -17,6 +18,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
     MaterialCardView cardView;
 
+    MaterialCheckBox homeActivityCheckBox;
+
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.homeActivityImageView);
@@ -26,6 +29,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         editIcon = itemView.findViewById(R.id.homeActivityEditIcon);
         deleteIcon = itemView.findViewById(R.id.homeActivityDeleteIcon);
         shareIcon = itemView.findViewById(R.id.homeActivityShareIcon);
+        homeActivityCheckBox = itemView.findViewById(R.id.homeActivityCheckBox);
 
     }
 }

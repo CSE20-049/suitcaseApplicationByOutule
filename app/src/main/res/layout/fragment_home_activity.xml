@@ -29,6 +29,7 @@
             android:layout_below="@id/listHubTextView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="40dp"
             app:backgroundTint="#8019191B"
             android:background="@drawable/searchbar_border"

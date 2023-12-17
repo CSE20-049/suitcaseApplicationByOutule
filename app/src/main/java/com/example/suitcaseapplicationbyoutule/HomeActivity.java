@@ -1,7 +1,8 @@
 package com.example.suitcaseapplicationbyoutule;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,7 +24,6 @@ import android.view.ViewGroup;
 
 import com.example.suitcaseapplicationbyoutule.adaptersAndViewHolders.ItemAdapter;
 import com.example.suitcaseapplicationbyoutule.model.Item;
-import com.example.suitcaseapplicationbyoutule.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeActivity extends Fragment {
 
@@ -44,9 +44,9 @@ public class HomeActivity extends Fragment {
 
     DatabaseReference databaseReference;
 
-    private String email;
-
     ValueEventListener valueEventListener;
+
+    SearchView homeActivitySearchBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,8 +57,23 @@ public class HomeActivity extends Fragment {
                 false);
 
         recyclerView = homeActivityScreen.findViewById(R.id.recyclerViewOne);
+        homeActivitySearchBar = homeActivityScreen.findViewById(R.id.homeActivitySearchBar);
+        homeActivitySearchBar.clearFocus();
 
-                //This code below helps style the application's name by applying color gradient.
+        homeActivitySearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchList(newText);
+                return true;
+            }
+        });
+
+        //This code below helps style the application's name by applying color gradient.
         MaterialTextView listHubTextView = homeActivityScreen.findViewById(R.id.listHubTextView);
         TextPaint textPaint = listHubTextView.getPaint();
         float width = textPaint.measureText(getResources().getString(R.string.app_name));
@@ -77,9 +92,10 @@ public class HomeActivity extends Fragment {
                 R.color.fab_icon_tint);
         addBTN.setImageTintList(colorStateList);
 
-        // Retrieve Sanitized email from the intent.
-        Intent intent = requireActivity().getIntent();
-        email = intent.getStringExtra("email");
+        // Retrieve Sanitized email from shared preference
+        SharedPreferences preferences = requireActivity().getApplicationContext().getSharedPreferences(
+                "Email Preference", Context.MODE_PRIVATE);
+        String email = preferences.getString("sanitizedEmail", "");
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -92,11 +108,10 @@ public class HomeActivity extends Fragment {
         dialog.show();
 
         itemList = new ArrayList<>();
-        itemAdapter =  new ItemAdapter(getContext(), itemList);
+        itemAdapter =  new ItemAdapter(getContext(), itemList, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(itemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(email)
-                .child("Product");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Items for " + email);
         dialog.show();
 
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -120,10 +135,21 @@ public class HomeActivity extends Fragment {
 
         //floatingBTN ActionLister__________________________________________________________________
         addBTN.setOnClickListener(View -> {
-            Intent intent1 = new Intent(requireContext(), AddNewItemActivity.class);
-            intent1.putExtra("email", email);
-            startActivity(intent1);
+            Intent intent = new Intent(requireContext(), AddNewItemActivity.class);
+            startActivity(intent);
         });
         return homeActivityScreen;
+    }
+
+    //Search for a specific Item in the list
+    private void searchList(String searchText) {
+
+        ArrayList<Item> itemArrayList = new ArrayList<>();
+        for (Item item: itemList) {
+            if (item.getName().toLowerCase().contains(searchText.toLowerCase())) {
+                itemArrayList.add(item);
+            }
+        }
+        itemAdapter.searchDataList(itemArrayList);
     }
 }

@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class Item implements Parcelable {
+public class Item {
 
     private String name;
     private String price;
     private String description;
     private String image;
+    private Boolean isChecked;
     private String key;
 
     public Item() {
@@ -49,35 +50,19 @@ public class Item implements Parcelable {
         this.image = image;
     }
 
+    public Boolean getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
     public String getKey() {
         return key;
     }
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    protected Item(Parcel in) {
-    }
-
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
-        @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
     }
 }
