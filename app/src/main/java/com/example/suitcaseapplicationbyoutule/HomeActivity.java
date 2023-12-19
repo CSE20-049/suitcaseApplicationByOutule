@@ -108,7 +108,7 @@ public class HomeActivity extends Fragment {
         dialog.show();
 
         itemList = new ArrayList<>();
-        itemAdapter =  new ItemAdapter(getContext(), itemList, getActivity().getSupportFragmentManager());
+        itemAdapter =  new ItemAdapter(getContext(), itemList, requireActivity().getSupportFragmentManager());
         recyclerView.setAdapter(itemAdapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Items for " + email);

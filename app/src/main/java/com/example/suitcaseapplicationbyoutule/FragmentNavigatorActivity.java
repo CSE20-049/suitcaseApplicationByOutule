@@ -40,9 +40,6 @@ public class FragmentNavigatorActivity extends AppCompatActivity {
                 } else if (itemId == R.id.purchasedIconID) {
                     viewPager2.setCurrentItem(1, true);
                     return true;
-                } else if (itemId == R.id.profileIconID) {
-                    viewPager2.setCurrentItem(2, true);
-                    return true;
                 } else {
                     return false;
                 }
@@ -67,8 +64,6 @@ public class FragmentNavigatorActivity extends AppCompatActivity {
                 return R.id.homeIconID;
             case 1:
                 return R.id.purchasedIconID;
-            case 2:
-                return R.id.profileIconID;
             default:
                 return 0;
         }

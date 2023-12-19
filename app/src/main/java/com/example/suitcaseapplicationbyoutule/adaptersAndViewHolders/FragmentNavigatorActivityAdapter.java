@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.suitcaseapplicationbyoutule.HomeActivity;
-import com.example.suitcaseapplicationbyoutule.ProfileActivity;
 import com.example.suitcaseapplicationbyoutule.PurchasedActivity;
 
 public class FragmentNavigatorActivityAdapter extends FragmentStateAdapter {
@@ -24,8 +23,6 @@ public class FragmentNavigatorActivityAdapter extends FragmentStateAdapter {
                 return new HomeActivity();
             case 1:
                 return new PurchasedActivity();
-            case 2:
-                return new ProfileActivity();
             default:
                 throw new IllegalArgumentException("Invalid position");
         }
@@ -33,6 +30,6 @@ public class FragmentNavigatorActivityAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

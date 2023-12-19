@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.suitcaseapplicationbyoutule.FragmentNavigatorActivity;
-import com.example.suitcaseapplicationbyoutule.HomeActivity;
 import com.example.suitcaseapplicationbyoutule.ItemDetailActivity;
 import com.example.suitcaseapplicationbyoutule.R;
 import com.example.suitcaseapplicationbyoutule.ShareItemDialog;
 import com.example.suitcaseapplicationbyoutule.UpdateItemActivity;
 import com.example.suitcaseapplicationbyoutule.model.Item;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,7 +38,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     private DatabaseReference databaseReference;
 
-    private FragmentManager fragmentManager;
+    private androidx.fragment.app.FragmentManager fragmentManager;
+
+    private String email;
 
     public ItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
@@ -61,6 +65,34 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         Glide.with(context).load(itemList.get(position).getImage()).into(holder.imageView);
         holder.itemName.setText(itemList.get(position).getName());
         holder.itemDescription.setText(itemList.get(position).getDescription());
+        holder.homeActivityCheckBox.isChecked();
+
+        // Retrieve the value of "isChecked" from the Firebase Realtime Database
+        String itemKey = itemList.get(position).getKey();
+
+        // Retrieve Sanitized email from shared preference
+        SharedPreferences preferences = context.getSharedPreferences(
+                "Email Preference", Context.MODE_PRIVATE);
+        email = preferences.getString("sanitizedEmail", "");
+
+        DatabaseReference itemReference = FirebaseDatabase.getInstance().getReference("Items for " + email).child(itemKey);
+        itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean isChecked = dataSnapshot.child("isChecked").getValue(Boolean.class);
+
+                    // Set the checkbox state based on the value of "isChecked"
+                    holder.homeActivityCheckBox.setChecked(isChecked);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+
 
         holder.cardView.setOnClickListener(view -> {
             Intent intent = new Intent(context, ItemDetailActivity.class);
@@ -85,15 +117,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         });
 
         holder.deleteIcon.setOnClickListener(view -> {
+
             // Retrieve Sanitized email from shared preference
-            SharedPreferences preferences = context.getSharedPreferences(
-                    "Email Preference", Context.MODE_PRIVATE);
-            String email = preferences.getString("sanitizedEmail", "");
+            email = preferences.getString("sanitizedEmail", "");
 
             // Obtain the item's key and position
             int adapterPosition = holder.getAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION && !itemList.isEmpty() && adapterPosition < itemList.size()) {
-                String itemKey = itemList.get(adapterPosition).getKey();
+
 
                 // Get the image URL associated with the item
                 String imageUrl = itemList.get(adapterPosition).getImage();
@@ -133,16 +164,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             openDialog();
         });
 
+        // Marking item as purchased and un-marking it whilst updating it's field at the database
         holder.homeActivityCheckBox.setOnClickListener(view -> {
             // Retrieve Sanitized email from shared preference
-            SharedPreferences preferences = context.getApplicationContext().getSharedPreferences(
-                    "Email Preference", Context.MODE_PRIVATE);
-            String email = preferences.getString("sanitizedEmail", "");
+           email = preferences.getString("sanitizedEmail", "");
 
-            // Obtain the item's key and position
+            // Obtain the item's position
             int adapterPosition = holder.getAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION && !itemList.isEmpty() && adapterPosition < itemList.size()) {
-                String itemKey = itemList.get(adapterPosition).getKey();
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("Items for " + email)
                         .child(itemKey);

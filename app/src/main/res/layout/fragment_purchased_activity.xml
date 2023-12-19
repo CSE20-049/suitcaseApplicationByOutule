@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/purchasedActivitySearchBar"
             android:layout_marginTop="40dp"
-            android:id="@+id/RecyclerViewOne"/>
+            android:id="@+id/RecyclerViewTwo"/>
 
     </RelativeLayout>
 

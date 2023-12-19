@@ -9,8 +9,4 @@
         android:icon="@drawable/ic_cart"
         android:title="@string/purchased"/>
 
-    <item android:id="@+id/profileIconID"
-        android:icon="@drawable/ic_person2"
-        android:title="@string/profile"/>
-
 </menu>

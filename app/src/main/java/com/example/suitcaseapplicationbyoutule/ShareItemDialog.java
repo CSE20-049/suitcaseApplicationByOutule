@@ -66,6 +66,7 @@ public class ShareItemDialog extends AppCompatDialogFragment {
                             sendSMS(contactNumber,message);
                         } else {
                             // When permission is not granted, request for permission
+                            Toast.makeText(requireContext(), "No No No No", Toast.LENGTH_SHORT).show();
                             ActivityCompat.requestPermissions(requireActivity(),
                                     new String[]{Manifest.permission.SEND_SMS}, 100);
                         }
@@ -95,7 +96,6 @@ public class ShareItemDialog extends AppCompatDialogFragment {
                         "\n\nName: " + itemName +
                         "\nPrice: " + itemPrice +
                         "\nImage: " + itemImage;
-
                 sendSMS(contactNumber,message);
             } else {
                 // Permission denied, handle this case

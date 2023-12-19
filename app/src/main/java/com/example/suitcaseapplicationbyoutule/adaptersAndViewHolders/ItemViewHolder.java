@@ -13,11 +13,9 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-    ShapeableImageView imageView, editIcon, deleteIcon, shareIcon;
-    MaterialTextView itemName, itemDescription;
-
+    ShapeableImageView imageView, editIcon, deleteIcon, shareIcon, purchasedActivityImageView;
+    MaterialTextView itemName, itemDescription, purchasedActivityItemName;
     MaterialCardView cardView;
-
     MaterialCheckBox homeActivityCheckBox;
 
     public ItemViewHolder(@NonNull View itemView) {
@@ -30,6 +28,5 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         deleteIcon = itemView.findViewById(R.id.homeActivityDeleteIcon);
         shareIcon = itemView.findViewById(R.id.homeActivityShareIcon);
         homeActivityCheckBox = itemView.findViewById(R.id.homeActivityCheckBox);
-
     }
 }
